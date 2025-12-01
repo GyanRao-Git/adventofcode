@@ -18,7 +18,7 @@
 #define START 50
 int main(){
      
-     std::ifstream fin("input.txt");
+     std::ifstream fin("../input.txt");
      if(!fin){
           std::cerr<<"Cannot open input file";
           return 1;

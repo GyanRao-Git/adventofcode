@@ -3,6 +3,7 @@
 #include<vector>
 #include<algorithm>
 #include<string>
+#include<math.h>
 
 /* SOME OBSERVATIONS
      instead of two spots we need to fill 12 spots 
@@ -17,28 +18,23 @@
 
 */
 
-long long fn(int idx, const std::string &input, int len,
-             std::vector<std::vector<long long>> &dp, long long curr) {
-    
-    if (len == 12) return curr;
-    if (idx >= (int)input.size()) return 0;
+long long fn(int i, int len, const std::string& s, std::vector<std::vector<long long>>& dp) {
 
-    bool canMemo = (curr == 0);
+    if (len == 12) return 0;
 
-    if (canMemo && dp[idx][len] != -1) return dp[idx][len];
+    if (i == s.size()) return LLONG_MIN;
 
-    int digit = input[idx] - '0';
-    
-    long long takeCurr = curr * 10 + digit;
-    long long take = fn(idx + 1, input, len + 1, dp, takeCurr);
-    long long skip = fn(idx + 1, input, len, dp, curr);
+    if (dp[i][len] != -1) return dp[i][len];
 
-    long long res = std::max(take, skip);
+    int digit = s[i] - '0';
 
-    if (canMemo) dp[idx][len] = res;
+    long long skip = fn(i + 1, len, s, dp);
 
-    return res;
+    long long take = (long long)digit * (long long)pow(10, 11 - len) + fn(i + 1, len + 1, s, dp);
+
+    return dp[i][len] = std::max(take, skip);
 }
+
 
 
 
@@ -72,7 +68,7 @@ int main(){
           
           std::string temp="";
 
-          ans+=fn(0,input,0,dp,0);
+          ans+=fn(0,0,input,dp);
           
      }
 
